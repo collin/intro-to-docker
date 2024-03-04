@@ -1,0 +1,33 @@
+---
+title: "Autoremove"
+---
+
+export const meta = [{ title: `🐋 ${frontmatter.title}` }];
+
+import Markdown from "react-markdown";
+import { Terminal } from "../components/Terminal";
+import { ExplainShell } from "../components/ExplainShell";
+
+It's great to be able to cleanup your workspace as you go. But it's even better to keep things tidy as you go. Docker has a built-in feature to remove containers as soon as they stop running.
+
+<Terminal>docker run --rm ubuntu:latest echo "This will be removed"</Terminal>
+
+<ExplainShell
+  fixedFocusIndex={1}
+  parts={{
+    "docker run": null,
+    "--rm": (
+      <Markdown>
+        Remove the container when it exits. Note that this flag comes after
+        `docker run` and before the image name.
+      </Markdown>
+    ),
+    "ubuntu:latest": null,
+    echo: null,
+    ['"This will be removed"']: null,
+  }}
+/>
+
+This can be combined with the `-it` flags when running an interactive shell. This way, you can run a command and then have the container removed when you exit.
+
+<Terminal>docker run -it --rm ubuntu:latest</Terminal>

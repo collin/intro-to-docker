@@ -1,0 +1,73 @@
+---
+title: "Run a simple container"
+---
+
+export const meta = [{ title: `🐋 ${frontmatter.title}` }];
+
+import Markdown from "react-markdown";
+import { Terminal } from "../components/Terminal";
+import { ExplainShell } from "../components/ExplainShell";
+
+export const pageTitle = () => <>⚡️ Ephemeral computers, instantly</>;
+
+Now, let's run a quick, instant, ephemeral computed. We'll use the `ubuntu` image. This image is a minimal Ubuntu base image, and it is often used as a starting point for other images.
+
+<Terminal>docker run --interactive --tty ubuntu:latest</Terminal>
+
+If this is your first time running a container from the `ubuntu` image on this machine, you'll see Docker download the image from the Docker Hub. This is a public registry of Docker images, and it's the default place to get images from.
+
+Once everything is downloaded, your terminal will be taken over by a new shell running inside a docker container. You can run commands in this shell, and they'll execute inside the container. Try out `ls`, `whoami`, or `uname -a` to see some details of the machine.
+
+When you're satisfied, you can exit the container by typing `exit` and pressing enter. Your terminal will return to the state it was in before you ran the `docker run` command.
+
+## What's happening here?
+
+Let's break down that docker command
+
+<ExplainShell
+  parts={{
+    "docker run": (
+      <Markdown>
+        The `docker` command, and it's sub-command `run`. All following parts of
+        the command string will be interpreted by the docker program as
+        arguments to the `run` sub-command
+      </Markdown>
+    ),
+    "--interactive": (
+      <Markdown>
+        Instructs Docker run the container in interactive mode. If you don't use
+        this flag when opening sub-shells, you may end up with an unresponsive
+        terminal.
+      </Markdown>
+    ),
+    "--tty": (
+      <Markdown>
+        Creates a pseudo-TTY for the container. This is usually used with the
+        `--interactive` flag. Much like the `--interactive` flag, if you don't
+        use this flag, you may end up with an unresponsive terminal.
+      </Markdown>
+    ),
+    "ubuntu:latest": (
+      <Markdown>
+        The name of the image to run. This is the `ubuntu` image, and we're
+        using the `latest` tag.
+      </Markdown>
+    ),
+  }}
+/>
+
+That's a little verbose, so here's a short-cut:
+
+<ExplainShell
+  fixedFocusIndex={1}
+  parts={{
+    "docker run": null,
+    "-it": (
+      <>
+        Typically, you'll use the short-hand flags to specify `--interactive`
+        and `--tty` together.
+      </>
+    ),
+    "ubuntu:latest": null,
+  }}
+/>

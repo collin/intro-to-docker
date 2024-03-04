@@ -1,0 +1,94 @@
+---
+title: "Cleaning Up"
+---
+
+export const meta = [{ title: `🐋 ${frontmatter.title}` }];
+
+import { Terminal } from "../components/Terminal";
+import { ExplainShell } from "../components/ExplainShell";
+
+The containers we ran aren't running, but they did leave behind some artifacts. It's very common to run a container and then never use it again. It's best to think of containers as "disposable". You can always run a new one, and you can always delete the old one.
+
+So, let's clean up after ourselves.
+
+## Deleting individual containers
+
+First, let's list all the containers that are stopped:
+
+<Terminal>docker container list --filter "status=exited"</Terminal>
+
+<ExplainShell
+  parts={{
+    "docker container list": null,
+    "--filter": "Apply a filter to the list",
+    '"status=exited"':
+      "Filter the list to only show containers that have exited. This is a key-value pair, where the key is 'status' and the value is 'exited'.",
+  }}
+/>
+
+We're looking for the id of the container we want to delete. Once we have that, we can delete it:
+
+<figure>
+  <img src="/container-id.png" width="600" />
+  <figcaption>You can copy the container id from the listing.</figcaption>
+</figure>
+
+<Terminal>docker container rm [container id]</Terminal>
+
+> <span className="bigmogi">👆🏻</span> Replace `[container id]` with the id of a container
+> from the output on your machine, so, something like `docker container rm 33cf5e1bfee0`
+
+## Bulk deleting containers
+
+Due to the ephemeral nature of containers, it's common to have a lot of them lying around. You can delete all of them at once.
+
+To do this we'll need to combine multiple commands into one.
+
+We'll use an option of `docker container list` to get the ids of all the containers that are stopped without any extraneous data.
+
+Then we'll use the bash substitution syntax to pass the output of the first command as an argument to a second command.
+
+First, getting the list of container ids:
+
+<Terminal>docker container list --all --quiet</Terminal>
+
+<ExplainShell
+  parts={{
+    "docker container list": null,
+    "--all": "Show all containers, regardless of their status",
+    "--quiet": "Only show the container ids",
+  }}
+/>
+
+You should see output something like the following:
+
+<Terminal noCopy>{`
+❯ docker container list --all --quiet
+444cfc29e03b
+aaa2342c34ab
+96368062e644
+`}</Terminal>
+
+Now that we have a way to get ONLY the ids of the container, we can combine it with the `docker container rm` command:
+
+<Terminal noCopy>{`
+docker container rm $(docker container list --all --quiet)
+`}</Terminal>
+
+<ExplainShell
+  parts={{
+    "docker container rm": "The command to remove containers",
+    "$(docker container list --all --quiet)":
+      "This is a bash substitution. It will replace this part of the command with the output of the command inside the parentheses.",
+  }}
+/>
+
+So, all-together, this would be a little bit like running the following command:
+
+<Terminal noCopy>{`
+docker container rm 444cfc29e03b aaa2342c34ab 96368062e644
+`}</Terminal>
+
+We aren't actually typing out the ids, but the command will be run as if we did.
+
+Much like the `list` command can be applied to other resource types. The rm command can also be applied to other resource types. For example, you can delete all the images on your machine with `docker image rm $(docker image list --all --quiet)`. (But don't do that just yet! We'll focus on other resource types later.)

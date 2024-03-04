@@ -1,0 +1,87 @@
+---
+title: "Look around"
+---
+
+export const meta = [{ title: `🐋 ${frontmatter.title}` }];
+
+import Markdown from "react-markdown";
+import { Terminal } from "../components/Terminal";
+import { ExplainShell } from "../components/ExplainShell";
+
+Now that we've run a few containers, we've created some data in the docker system. We can take a look the containers we have run.
+
+<Terminal>docker container list</Terminal>
+
+You'll see something like this:
+
+<Terminal noCopy>{`
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+`}</Terminal>
+
+<span style={{ fontSize: "2rem" }}>🤔</span> But that's not quite right. We just
+ran several containers.
+
+We need to add the `--all` flag to see
+all the containers, even the ones that have stopped.
+
+<Terminal>docker container list --all</Terminal>
+
+<span style={{ fontSize: "2rem" }}>👍🏻</span> Now you should get something like this:
+
+<Terminal noCopy>{`
+CONTAINER ID   IMAGE             COMMAND                  CREATED              STATUS                          PORTS     NAMES
+33cf5e1bfee0   docker/whalesay   "cowsay 'hello, it's…"   About a minute ago   Exited (0) About a minute ago             sweet_thompson
+444cfc29e03b   ubuntu:latest     "date"                   About a minute ago   Exited (0) About a minute ago             magical_goldberg
+aaa2342c34ab   ubuntu:latest     "/bin/bash"              2 minutes ago        Exited (0) 2 minutes ago                  awesome_perlman
+96368062e644   hello-world       "/hello"                 2 minutes ago        Exited (0) 2 minutes ago                  eloquent_leavitt
+`}</Terminal>
+
+<ExplainShell
+  parts={{
+    "docker container":
+      "The sub-command of docker we're running. When running commands related to a container, we use the `docker container` prefix.",
+    list: "Specifically, we want to list containers.",
+    "--all": "We want to see all the containers, even ones that have stopped.",
+  }}
+/>
+
+We can look at other resources as well. We'll be covering these resources in greater detail later. This is also not an exhaustive list of the kinds of resources managed by docker. We won't cover all those resources in this class. The purpose of showing you these commands is to give you a peek into how the docker system is organized. You can see that it's a lot like a file system, with directories and files, but instead of directories and files, we have `containers`, `images`, `volumes`, `networks`, etc.
+
+<ExplainShell
+  fixedFocusIndex={1}
+  parts={{
+    docker: null,
+    image: (
+      <Markdown>
+        You can get a list of all the `images` docker has downloaded.
+      </Markdown>
+    ),
+    list: null,
+  }}
+/>
+
+<ExplainShell
+  fixedFocusIndex={1}
+  parts={{
+    docker: null,
+    volume: (
+      <Markdown>
+        You can get a list of all the mountable `volumes` docker has created.
+      </Markdown>
+    ),
+    list: null,
+  }}
+/>
+
+<ExplainShell
+  fixedFocusIndex={1}
+  parts={{
+    docker: null,
+    network: (
+      <Markdown>
+        You can list all the virtual `networks` docker is managing.
+      </Markdown>
+    ),
+    list: null,
+  }}
+/>

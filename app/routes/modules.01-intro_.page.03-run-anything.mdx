@@ -1,0 +1,76 @@
+---
+title: "Run anything"
+---
+
+export const meta = [{ title: `🐋 ${frontmatter.title}` }];
+
+import { Terminal } from "../components/Terminal";
+import { ExplainShell } from "../components/ExplainShell";
+
+We can use docker run any program inside of a container, provided it's been pre-installed in the container image. For example, we can run the `date` command in ubuntu to print the current date and time:
+
+<Terminal>docker run ubuntu:latest date</Terminal>
+
+<ExplainShell
+
+parts={{
+    "docker run ubuntu:latest":
+      "Which image to run. Note that we're not using `-it` here. That's because the `date` command isn't interactive, so we don't need to attach attach our terminal.",
+    date: "The command to run inside the container",
+  }}
+/>
+
+If you run that, you should see the current date and time printed back out for you.
+
+Or, for a bit of whimsy, we can run the `cowsay` program in the `docker/whalesay` image to have a whale say hello to us:
+
+<Terminal
+  children={`docker run docker/whalesay cowsay "hello, it's lovely to be here in the sea"`}
+/>
+
+Should everything go well, you should see a whale saying hello to you:
+
+<Terminal noCopy>
+  {`
+ ______________________________________
+/ hello, it's lovely to be here in the \\
+\\ sea                                  /
+ --------------------------------------
+    \\
+     \\
+      \\
+                    ##        .
+              ## ## ##       ==
+           ## ## ## ##      ===
+       /""""""""""""""""___/ ===
+  ~~~ {~~ ~~~~ ~~~ ~~~~ ~~ ~ /  ===- ~~~
+       \\______ o          __/
+        \\    \\        __/
+          \\____\\______/
+`}
+</Terminal>
+
+There were some differences between that command and the one we ran before. Let's break it down:
+
+<ExplainShell
+  parts={{
+    "docker run": null,
+    "docker/whalesay":
+      "This specifies an image to run. The `/` indicates the container belongs to an organization on Dockerhub. Some images, like `ubuntu` are official images, and don't need to have their organization specified.",
+    cowsay:
+      "The command to run inside the container. The reason why this is called `cowsay` is esoteric, but it's a fun little program that takes a string as an argument, and prints out a little ASCII art of a cow saying that string. This example is a variation that uses a whale instead of a cow.",
+    [`"hello, it's lovely to be here in the sea"`]:
+      "The argument to the `cowsay` command",
+  }}
+/>
+
+Another way to look at that command, is to split it into two parts:
+
+<ExplainShell
+  parts={{
+    "docker run docker/whalesay":
+      "This is our instruction to docker, it specifes which image to run, and any other configuration options. (In this example, there are none.)",
+    [`cowsay "hello, it's lovely to be here in the sea"`]:
+      "The second part of the command is the command to run inside the container. In this case, we're running the `cowsay` command, and passing it the string `hello, it's lovely to be here in the sea` as an argument.",
+  }}
+/>
