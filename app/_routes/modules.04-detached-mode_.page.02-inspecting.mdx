@@ -1,0 +1,58 @@
+---
+title: "Inspecting the container"
+---
+
+export const meta = [{ title: `🐋 ${frontmatter.title}` }];
+
+import Markdown from "react-markdown";
+import { Terminal } from "../components/Terminal";
+import { ExplainShell } from "../components/ExplainShell";
+
+To get more information about background containers, we can us `docker container list`, or `docker ps` for short.
+
+> `docker ps` is an alias for `docker container list`.
+
+<Terminal>{`
+CONTAINER ID   IMAGE            COMMAND      CREATED              STATUS              PORTS                  NAMES
+eb9d468a8651   hello-world-go   "./server"   About a minute ago   Up About a minute   0.0.0.0:8080->80/tcp   inspiring_galileo
+`}</Terminal>
+
+You should see something roughly like that. The `STATUS` column should say `Up`, and the `PORTS` column should show that port `8080` has been maped to port `80`.
+
+## Following the logs of the container
+
+Now, we may want to see the logs from this container. Before, they automatically were printed out to the terminal where the container was running. But in detached mode, we have to run a command to see them.
+
+<Terminal>docker logs [container_id]</Terminal>
+
+<ExplainShell
+  parts={{
+    "docker logs": "Print the logs of a container",
+    "[container_id]": (
+      <Markdown>
+        The ID of the container to print logs for. Replace this with the
+        container id shown in the output from `docker ps`.
+      </Markdown>
+    ),
+  }}
+/>
+
+## Information overload
+
+If you want to see all the information about a container, you can use `docker inspect`.
+
+<Terminal>docker inspect [container_id]</Terminal>
+
+<ExplainShell
+  parts={{
+    "docker inspect": "Return low-level information on Docker objects",
+    "[container_id]": (
+      <Markdown>
+        The ID of the container to inspect. Replace this with the container id
+        shown in the output from `docker ps`.
+      </Markdown>
+    ),
+  }}
+/>
+
+There's a lot more information in the output from `docker inspect` than we need to know right now. But it's a useful command to know about.

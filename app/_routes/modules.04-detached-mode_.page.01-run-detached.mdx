@@ -1,0 +1,35 @@
+---
+title: "Running detached"
+---
+
+export const meta = [{ title: `🐋 ${frontmatter.title}` }];
+
+import Markdown from "react-markdown";
+import { Terminal } from "../components/Terminal";
+import { ExplainShell } from "../components/ExplainShell";
+
+Previously, we ran our container and mapped port `8080` to it. But the container is attached to our terminal, printing output to it.
+
+We can't use the terminal for anything else while the container is running.
+
+Additionally, if we close our terminal for, the container will be stop.
+
+So, we might want to run our container in "the background". This means the container will run, but not be attached to one particular terminal.
+
+If your container is still running in your terminal, stop it now by pressing `Ctrl+C` with that terminal window focused.
+
+Now, start it again in detached mode:
+
+<Terminal>docker run --rm -it -p 8080:80 --detached hello-world-go</Terminal>
+
+<ExplainShell
+  parts={{
+    "docker run --rm -it -p 8080:80": null,
+    "--detached": "Run the container in the background",
+    "hello-world-go": null,
+  }}
+/>
+
+Docker will print out a long string of characters. This is the ID of the container that Docker has started. You can use this ID to interact with the container later.
+
+Now, visit [http://localhost:8080](http://localhost:8080) to confirm everything is still working correctly. You should see the text `Hello, world!` printed on the page.

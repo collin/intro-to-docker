@@ -1,0 +1,49 @@
+---
+title: "Publishing ports"
+---
+
+export const meta = [{ title: `🐋 ${frontmatter.title}` }];
+
+import Markdown from "react-markdown";
+import { Terminal } from "../components/Terminal";
+import { ExplainShell } from "../components/ExplainShell";
+
+Previously, we started our Go server and it printed out that that it was running on port 80.
+
+<Terminal>docker run --rm -it hello-world-go</Terminal>
+
+If that command is still running in your terminal, you can stop it by pressing `Ctrl+C` with that terminal window focused.
+
+> `Ctrl+C` sends a signal to the process running in the terminal to stop. This is called a `SIGINT` signal. Well-behaved programs will catch this signal and clean up after themselves before exiting.
+
+Now, we need to add another flag to our command to start our application in a Docker container. We need to tell Docker to map the port that our application is running on inside the container to a port on our host machine.
+
+<Terminal>docker run --rm -it --publish 8080:80 hello-world-go</Terminal>
+
+<ExplainShell
+  parts={{
+    "docker run --rm -it": null,
+    "--publish 8080:80":
+      "Map port 8080 on the host machine to port 80 inside the container",
+    "hello-world-go": null,
+  }}
+/>
+
+Now, if you visit [http://localhost:8080](http://localhost:8080) in your web browser, you should see the text `Hello, world!` printed on the page.
+
+This is because we've told Docker to map port 8080 on our host machine to port 80 inside the container. When we visit [http://localhost:8080](http://localhost:8080) in our web browser, our request is sent to port 8080 on our host machine. Docker then forwards that request to port 80 inside the container, where our Go server is running.
+
+Typically, the shorthand for the `--publish` flag is `-p`. So, you could also write the command like this:
+
+<ExplainShell
+  parts={{
+    "docker run --rm -it": null,
+    "-p 8080:80": (
+      <Markdown>
+        Maps port 8080 on the host machine to port 80 inside the container using
+        the short-hand `-p` flag
+      </Markdown>
+    ),
+    "hello-world-go": null,
+  }}
+/>

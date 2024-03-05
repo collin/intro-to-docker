@@ -1,0 +1,45 @@
+---
+title: "Inspecting the container"
+---
+
+export const meta = [{ title: `🐋 ${frontmatter.title}` }];
+
+import Markdown from "react-markdown";
+import { Terminal } from "../components/Terminal";
+import { ExplainShell } from "../components/ExplainShell";
+
+## Getting the logs of the container
+
+Now, we may want to see the logs from this container. Before, they automatically were printed out to the terminal where the container was running. But in detached mode, we have to run a command to see them.
+
+<Terminal>docker logs [container_id]</Terminal>
+
+<ExplainShell
+  parts={{
+    "docker logs": "Print the logs of a container",
+    "[container_id]": (
+      <Markdown>
+        The ID of the container to print logs for. Replace this with the
+        container id shown in the output from `docker ps`.
+      </Markdown>
+    ),
+  }}
+/>
+
+But notice, the logs print out and control of our terminal is immeditaly returned to us. This means we won't see new logs as they are printed out. To see new logs, we can use the `--follow` flag.
+
+<Terminal>docker logs --follow [container_id]</Terminal>
+
+<ExplainShell
+  parts={{
+    "docker logs": null,
+    "--follow":
+      "Print the logs of a container and keep following new logs. Can also be written as `-f`.",
+    "[container_id]": (
+      <Markdown>
+        The ID of the container to print logs for. Replace this with the
+        container id shown in the output from `docker ps`.
+      </Markdown>
+    ),
+  }}
+/>
