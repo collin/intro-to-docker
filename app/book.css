@@ -6,6 +6,10 @@ body {
   max-width: 100vw;
 }
 
+:root {
+  --ch-t-editor-selectionBackground: #4c6ca2;
+}
+
 #table-of-contents {
   padding-top: 1rem;
   ol,
@@ -30,6 +34,19 @@ body {
     margin-top: 0;
   }
 
+  > ul {
+    li {
+      margin-left: 0.5rem;
+      line-height: 2;
+    }
+    code {
+      white-space: nowrap;
+      background-color: #f4f4f4;
+      padding: 0.25rem;
+      border-radius: 0.25rem;
+    }
+  }
+
   > * {
     padding-left: 1rem;
     padding-right: 1rem;
@@ -39,6 +56,7 @@ body {
     border: 2px solid #eef7df;
     background-color: #dae9d8;
     padding: 0.5rem 1rem;
+    max-width: 40rem;
 
     > :first-child {
       margin-top: 0;

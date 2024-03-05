@@ -1,8 +1,12 @@
 import { Link, Outlet, useLocation } from "@remix-run/react";
 
-const modules = import.meta.glob("./modules.*([^page]).mdx", {
-  eager: true,
-});
+const modules = Object.fromEntries(
+  Object.entries(
+    import.meta.glob("./modules.*.mdx", {
+      eager: true,
+    }),
+  ).filter(([id]) => !id.includes("page")),
+);
 const pages = import.meta.glob("./*.page.*.mdx", { eager: true });
 
 const getModulePages = (name: string) => {
@@ -80,7 +84,6 @@ export default function Modules() {
       style={{
         display: "grid",
         gridTemplateColumns: "15rem 1fr",
-        height: "100vh",
         width: "100vw",
         overflowX: "hidden",
       }}
@@ -105,7 +108,7 @@ export default function Modules() {
                 </Link>
                 <ol>
                   {Object.entries(
-                    getModulePages(id.match(/modules\.([^.])/)?.[1] ?? ""),
+                    getModulePages(id.match(/modules\.([^.]*)/)?.[1] ?? ""),
                   ).map(([id, module]) => {
                     const frontmatter = getFrontMatter(module);
                     return (

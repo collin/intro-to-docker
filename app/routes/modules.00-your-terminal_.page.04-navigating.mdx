@@ -1,0 +1,173 @@
+---
+title: "🧭 Navigating"
+---
+
+import Markdown from "react-markdown";
+import { Terminal } from "../components/Terminal";
+import { ExplainShell } from "../components/ExplainShell";
+import {
+  NavigationPlayground,
+  Directory,
+} from "../components/NavigationPlayground";
+import { smallfs, nestedfs, bigfs } from "../fileSystems";
+
+export const meta = [{ title: `${frontmatter.title}` }];
+
+Navigating your terminal to the desired working directory is a common task. This guide will show you how to navigate your terminal using the `cd` command.
+
+Here's a little visual representation of a file system. The active working directory is marked with a ⬅️ and has a gold background.
+
+<NavigationPlayground noTerminal root={bigfs} />
+
+## `cd` command
+
+The `cd` command is used to change the current working directory. It is used to navigate to a different directory.
+
+Let's say we had this file system:
+
+<NavigationPlayground noTerminal root={smallfs} />
+
+If we wanted to navigate to the `recipes` directory, we could use the following command:
+
+<ExplainShell
+  parts={{
+    cd: "Change the current working directory.",
+    recipes: "Change the current working directory to the `recipes` directory.",
+  }}
+/>
+
+That would result in the following navigation:
+
+<NavigationPlayground noTerminal root={smallfs} initialPwd="/home/recipes" />
+
+## `cd` into nested directories
+
+Now, sometimes we want to navigate to a directory that is nested inside another directory.
+
+<NavigationPlayground noTerminal root={nestedfs} />
+
+For example, if we wanted to navigate directly to the `docker` directory. We can use the following command:
+
+<ExplainShell
+  parts={{
+    cd: null,
+    "docs/tutorials/docker": "Navigate to the `docker` directory.",
+  }}
+/>
+
+That would result in the following navigation:
+
+<NavigationPlayground
+  noTerminal
+  root={nestedfs}
+  initialPwd="/home/docs/tutorials/docker"
+/>
+
+## `cd` into parent directories
+
+Sometimes we want to navigate up to parent directories. We can use the `..` to navigate to the parent directories.
+
+<NavigationPlayground
+  noTerminal
+  root={nestedfs}
+  initialPwd="/home/docs/tutorials/docker"
+/>
+
+For example, if we wanted to navigate back up to the `tutorials` directory, we can use the following command:
+
+<ExplainShell
+  parts={{
+    cd: null,
+    "..": "Navigate to the parent directory.",
+  }}
+/>
+
+That would result in the following navigation:
+
+<NavigationPlayground
+  noTerminal
+  root={nestedfs}
+  initialPwd="/home/docs/tutorials"
+/>
+
+This can be combined to navigate up more than one level. For example, to navigate back to the `home` directory, we can use the following command:
+
+<ExplainShell
+  parts={{
+    "cd ../..": "Navigate up through two parent levels.",
+  }}
+/>
+
+That would result in the following navigation:
+
+<NavigationPlayground noTerminal root={nestedfs} initialPwd="/home" />
+
+## The `.` and `~` directories
+
+The `.` directory refers to the current directory. It can be used to refer to the current directory in commands.
+
+In all the examples shown so far, we have been using path strings that do not start with any special characters. These path strings are relative paths. They are relative to the current working directory.
+
+There is another way to refer to the current working directory. We can use the `.` directory. For example, to navigate to the current working directory, we can use the following command:
+
+<ExplainShell
+  parts={{
+    "cd ./recipes": (
+      <Markdown>
+        Navigate to the current working directory. This is equivalent to running
+        `cd recipes`.
+      </Markdown>
+    ),
+  }}
+/>
+
+The `~` directory refers to the current user's home directory. It can be used to refer to the home directory in commands.
+
+For example, to navigate to the current user's home directory, we can use the following command:
+
+<ExplainShell
+  parts={{
+    " cd ~": "Navigate to the current user's home directory.",
+  }}
+/>
+
+## list the current directory.
+
+You can use the `ls` command to view the contents of directories.
+
+For example, to list the contents of the current working directory, you can use the following command:
+
+<ExplainShell
+  parts={{
+    ls: "List the contents of the current working directory.",
+  }}
+/>
+
+That form is equivalent to running `ls .` which lists the contents of the current working directory.
+
+The `ls` command can also be used to list the contents of a different directory. For example, to list the contents of the `recipes` directory, from one directory abev, you can use the following command:
+
+<ExplainShell
+  parts={{
+    "ls recipes": (
+      <Markdown>List the contents of the `recipes` directory.</Markdown>
+    ),
+  }}
+/>
+
+## Playground
+
+You can use the following playground to experiment with the `cd` command.
+
+Here are some navigation styles to try:
+
+- Navigate down into a directory.
+- Navigate up with `..`
+- Navigate down into nested directories with one command
+- Navigate up through multiple levels with one command
+- Navigate up with `..`, then down into a different directory in one command
+- Use `ls` to list the contents of the current directory
+- Use `ls` to list the contents of a different directory
+- Try to change directories into a directory that does not exist
+
+<NavigationPlayground root={bigfs} />

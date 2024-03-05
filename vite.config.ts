@@ -3,14 +3,25 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import mdx from "@mdx-js/rollup";
 import remarkFrontmatter from "remark-frontmatter";
+import { remarkCodeHike } from "@code-hike/mdx";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
-import rehypePrettyCode from "rehype-pretty-code";
 
 export default defineConfig({
   plugins: [
     mdx({
-      remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
-      rehypePlugins: [rehypePrettyCode],
+      remarkPlugins: [
+        remarkFrontmatter,
+        remarkMdxFrontmatter,
+        [
+          remarkCodeHike,
+          {
+            theme: "material-palenight",
+            showCopyButton: true,
+            lineNumbers: false,
+            autoLink: true,
+          },
+        ],
+      ],
     }),
     remix(),
     tsconfigPaths(),
@@ -23,7 +34,7 @@ export default defineConfig({
       // If you're comfortable with Vite's dev server making any file within the
       // project root available, you can remove this option.  See more:
       // https://vitejs.dev/config/server-options.html#server-fs-allow
-      allow: ["app"],
+      allow: ["app", "node_modules/@code-hike/mdx/dist/index.css"],
     },
   },
 });

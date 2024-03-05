@@ -1,0 +1,269 @@
+---
+title: "📂 Managing Files"
+---
+
+import Markdown from "react-markdown";
+import { Terminal } from "../components/Terminal";
+import { ExplainShell } from "../components/ExplainShell";
+import { ShellPractice } from "../components/ShellPractice";
+
+export const meta = [{ title: `${frontmatter.title}` }];
+
+Creating, moving, copying and deleting files are common tasks when working with the command line.
+
+## Creating Files
+
+To create a new file, use the `touch` command followed by the name of the file you want to create.
+
+<ExplainShell
+  parts={{
+    touch: (
+      <Markdown>
+        `touch` is a built-in command that creates a new file with the name you
+        specify. If the file already exists, `touch` will update the file's
+        modification time to the current time.
+      </Markdown>
+    ),
+    "file.txt": (
+      <Markdown>
+        This is the name of the file you want to create. You can replace
+        `file.txt` with any name you want. You can also specify a path in
+        another directory here. Such as `my-files/file.txt`. That will be
+        combined with the current working directory to determine the full path.
+      </Markdown>
+    ),
+  }}
+/>
+
+### Quick Practice
+
+<ShellPractice
+  commands={{
+    "Create a new file called `hello.txt`": "touch hello.txt",
+    "Create a new file called `my-files/hello.txt`": "touch my-files/hello.txt",
+    "Create a new file called `server.go`": "touch server.go",
+  }}
+/>
+
+## Moving Files
+
+To move a file from one location to another, use the `mv` command followed by the name of the file you want to move and the new location. It can also be thought of as renaming a file.
+
+<ExplainShell
+  parts={{
+    mv: (
+      <>
+        <Markdown>
+          `mv` is a built-in command that moves a file from one location to
+          another.
+          🚨 If the destination file already exists, it will be overwritten.
+        </Markdown>
+      </>
+    ),
+    "file.txt": <Markdown>The path of the file you wish to move.</Markdown>,
+    "renamed-file.txt": (
+      <Markdown>The new path you'd like to move the file to.</Markdown>
+    ),
+
+}}
+/>
+
+### Quick Practice
+
+<ShellPractice
+  commands={{
+    "Move `file.txt` to `renamed-file.txt`": "mv file.txt renamed-file.txt",
+    "Move `file.txt` to `my-files/file.txt`": "mv file.txt my-files/file.txt",
+  }}
+/>
+
+## Copying Files
+
+To copy a file from one location to another, use the `cp` command followed by the name of the file you want to copy and the new location. This is similar to the `mv` command, but it leaves the original file in place.
+
+<ExplainShell
+  parts={{
+    cp: (
+      <Markdown>
+        `cp` is a built-in command that copies a file from one location to
+        another.
+      </Markdown>
+    ),
+    "file.txt": <Markdown>The path of the file you wish to copy.</Markdown>,
+    "copied-file.txt": (
+      <Markdown>The new path you'd like to copy the file to.</Markdown>
+    ),
+  }}
+/>
+
+### Quick Practice
+
+<ShellPractice
+  commands={{
+    "Copy `file.txt` to `copied-file.txt`": "cp file.txt copied-file.txt",
+    "Copy `file.txt` to `my-files/file.txt`": "cp file.txt my-files/file.txt",
+  }}
+/>
+
+## Deleting Files
+
+To delete a file, use the `rm` command followed by the name of the file you want to delete.
+
+<ExplainShell
+  parts={{
+    rm: (
+      <>
+        <Markdown>
+          `rm` is a built-in command that deletes a file. 🚨 Be careful, this
+          action is irreversible. Deleting with `rm` skips the Trash/Recycli
+          bin.
+        </Markdown>
+      </>
+    ),
+    "file.txt": <Markdown>The path of the file you wish to delete.</Markdown>,
+  }}
+/>
+
+### Quick Practice
+
+<ShellPractice
+  commands={{
+    "Delete `file.txt`": "rm file.txt",
+    "Delete `my-files/file.txt`": "rm my-files/file.txt",
+  }}
+/>
+
+## Making Directories
+
+To create a new directory, use the `mkdir` command followed by the name of the directory you want to create.
+
+<ExplainShell
+  parts={{
+    mkdir: (
+      <Markdown>
+        `mkdir` is a built-in command that creates a new directory with the name
+        you specify.
+      </Markdown>
+    ),
+    "my-directory": (
+      <Markdown>
+        This is the name of the directory you want to create. You can replace
+        `my-directory` with any name you want. You can also specify a path in
+        another directory here. Such as `my-files/my-directory`. That will be
+        combined with the current working directory to determine the full path.
+      </Markdown>
+    ),
+  }}
+
+/>
+
+### Quick Practice
+
+<ShellPractice
+  commands={{
+    "Create a new directory called `my-directory`": "mkdir my-directory",
+    "Create a new directory called `my-files/my-directory`":
+      "mkdir my-files/my-directory",
+  }}
+/>
+
+## Moving Directories
+
+To move a directory from one location to another, use the `mv` command followed by the name of the directory you want to move and the new location. It can also be thought of as renaming a directory.
+
+<ExplainShell
+  parts={{
+    mv: (
+      <>
+        <Markdown>
+          `mv` is a built-in command that moves a directory from one location to
+          another. 🚨 If the destination directory already exists, it will be
+          overwritten.
+        </Markdown>
+      </>
+    ),
+    "my-directory": (
+      <Markdown>The path of the directory you wish to move.</Markdown>
+    ),
+    "renamed-directory": (
+      <Markdown>The new path you'd like to move the directory to.</Markdown>
+    ),
+  }}
+/>
+
+### Quick Practice
+
+<ShellPractice
+  commands={{
+    "Move `my-directory` to `renamed-directory`":
+      "mv my-directory renamed-directory",
+    "Move `my-directory` to `my-files/my-directory`":
+      "mv my-directory my-files/my-directory",
+  }}
+/>
+
+## Copying Directories
+
+To copy a directory from one location to another, use the `cp` command followed by the name of the directory you want to copy and the new location. This is similar to the `mv` command, but it leaves the original directory in place.
+
+<ExplainShell
+  parts={{
+    cp: (
+      <Markdown>
+        `cp` is a built-in command that copies a directory from one location to
+        another.
+      </Markdown>
+    ),
+    "my-directory": (
+      <Markdown>The path of the directory you wish to copy.</Markdown>
+    ),
+    "copied-directory": (
+      <Markdown>The new path you'd like to copy the directory to.</Markdown>
+    ),
+  }}
+/>
+
+### Quick Practice
+
+<ShellPractice
+  commands={{
+    "Copy `my-directory` to `copied-directory`":
+      "cp my-directory copied-directory",
+    "Copy `my-directory` to `my-files/my-directory`":
+      "cp my-directory my-files/my-directory",
+  }}
+/>
+
+## Deleting Directories
+
+To delete a directory, use the `rmdir` command followed by the name of the directory you want to delete.
+
+<ExplainShell
+  parts={{
+    rmdir: (
+      <>
+        <Markdown>
+          `rmdir` is a built-in command that deletes a directory. 🚨 Be careful,
+          this action is irreversible. Deleting with `rmdir` skips the
+          Trash/Recycling bin.
+        </Markdown>
+      </>
+    ),
+    "my-directory": (
+      <Markdown>The path of the directory you wish to delete.</Markdown>
+    ),
+  }}
+/>
+
+> 🚨 When using `rmdir`. It will only delete empty directories. If you want to delete a directory and all of its contents, use `rm -rf`. But be careful, there is no undo.
+
+### Quick Practice
+
+<ShellPractice
+  commands={{
+    "Delete `my-directory`": "rmdir my-directory",
+    "Delete `my-files/my-directory`": "rmdir my-files/my-directory",
+    "Delete `my-directory` and all of its contents. (use the dangerous command)":
+      "rm -rf my-directory",
+  }}
+/>

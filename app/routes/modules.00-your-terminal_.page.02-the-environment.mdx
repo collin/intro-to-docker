@@ -1,0 +1,48 @@
+---
+title: "💲 the ENVironment"
+---
+
+import Markdown from "react-markdown";
+import { Terminal } from "../components/Terminal";
+import { ExplainShell } from "../components/ExplainShell";
+
+export const meta = [{ title: `${frontmatter.title}` }];
+
+All terminal windows have a set of environment variables. These are crucial in determining how the shell behaves and how programs run.
+
+You can observe the environment variables by running the `env` command:
+
+```bash
+root@18df46ba86d1:/# env
+HOSTNAME=18df46ba86d1
+PWD=/
+HOME=/root
+TERM=xterm
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+```
+
+_In practice, there may be several more environment variables than this, but these are the ones you'll expect to see on any linux machine._
+
+- `HOSTNAME` is the hostname of the computer, and is shown in the promt text
+- `PWD` is the current working directory of the terminal, other commands will typcially use this to determine where to read and write files.
+- `HOME` is the home directory of the current user. And is used by many programs to determine where to read and write files that are specific to the user.
+- `TERM` is the terminal type, and is used by programs to determine how to display text.
+- `PATH` is a list of directories, separated by the `:` character. When you run a command, the shell will look in each of these directories in order, and run the first program it finds that matches the program by name.
+
+## Using environment variables
+
+You can use environment variables your your terminaly by prefixing them with a `$` character. For example, to print information about your terminal, you can run:
+
+<Terminal>
+  {`echo My home directory is $HOME, and my working directory is $PWD`}
+</Terminal>
+
+Give that a try and see what it prints out.
+
+## pwd
+
+The `pwd` command prints the current working directory. It's a simple command, but it's useful to know where you are in the filesystem.
+
+<Terminal>pwd</Terminal>
+
+> Often, when your commands aren't working as you expect them to, it's because you are not in the correct working directory.

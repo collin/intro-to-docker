@@ -1,0 +1,92 @@
+---
+title: "🗺️ Lay of the land"
+---
+
+import Markdown from "react-markdown";
+import { Terminal } from "../components/Terminal";
+import { ExplainShell } from "../components/ExplainShell";
+
+export const meta = [{ title: `${frontmatter.title}` }];
+
+When you first open a terminal window, you'll immediately see two things.
+The first is the prompt, which is a string of text displaying information
+about the current state of the terminal. The second is the cursor, which is
+a box or line that may blink to indicate where your keystrokes will appear.
+
+<figure>
+  <img src="/terminal-01.png" style={{ maxWidth: 500, paddingTop: "2rem" }} />
+</figure>
+
+It is possible that the cursor will lose focus, which means that it will stop
+responding to your keystrokes. This can happen if you click outside of the
+terminal window, or if you press a key combination that causes the terminal to
+lose focus. If this happens, you can usually regain focus by clicking inside
+the terminal window. (The visual treatment of lost focus varies by terminal and user configuration.)
+
+<figure>
+  <img
+    src="/terminal-lost-focus.png"
+    style={{ maxWidth: 500, poddingTop: "2rem" }}
+  />
+</figure>
+
+The prompt is a string of text that is displayed at the beginning of each line. It usually contains information about the current state of the terminal, such as the current working directory, the username, and the hostname. (The prompt is highly customizable, and you can change it to display whatever information you find useful. But we will not explore that in depth.)
+
+<figure>
+  <img src="/prompt-parts.png" style={{ maxWidth: 500, paddingTop: "2rem" }} />
+</figure>
+
+As you type into the terminal, you'll see the characters appear at the cursor.
+When you press the `Enter` key, the terminal will parse and execute the command that you have entered.
+
+Try typing the following command and pressing `Enter`:
+
+<Terminal>hello world</Terminal>
+
+<figure>
+  <img
+    src="/no-command-hello.png"
+    style={{ maxWidth: 500, paddingTop: "2rem" }}
+  />
+</figure>
+
+You'll seen error message that says `bash: hello: command not found`. The programming language running in our terminal is called `bash`. And this message indicates `hello` is not a command that the terminal recognizes. The terminal is telling you that it doesn't know what to do with the word `hello`.
+
+Instead, we can write a program the terminal does understand. Try typing the following command and pressing `Enter`:
+
+<Terminal>echo hello world</Terminal>
+
+<figure>
+  <img
+    src="/echo-hello-world.png"
+    style={{ maxWidth: 500, paddingTop: "2rem" }}
+  />
+</figure>
+
+<ExplainShell
+  parts={{
+    echo: (
+      <Markdown>
+        `echo` is a bult-in program. `echo` takes all the following parts of the
+        program and treats them as input text. And it prints them back out to
+        the terminal in response.
+      </Markdown>
+    ),
+    "hello world": "These are treated as plain text and printed back out.",
+  }}
+/>
+
+The shell language is designed for frequent use, and therefore allows for a lot of shortcuts. For example, in most languages, the string `hello world` would need to be enclosed in quotes. But in the shell language, the quotes are optional.
+
+_Technically, what is happening is more like providing a list of strings as an argument to the `echo` program. And they are joined with a blank character. But for now, you can think of it as a single string._
+
+The following example will have the same result as the previous one without the quotes:
+
+<ExplainShell
+  parts={{
+    echo: null,
+    [`"hello world"`]: "Here the wrapping quotes are supplied",
+  }}
+/>
+
+This is a feature tends to be useful, but can result in some confusion at the edge cases. But those are rare to encounter unless you are writing more complex programs.

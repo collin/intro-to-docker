@@ -10,6 +10,7 @@ import {
 import "./global.css";
 // eslint-disable-next-line import/no-unresolved
 import "./book.css";
+import "@code-hike/mdx/styles";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
