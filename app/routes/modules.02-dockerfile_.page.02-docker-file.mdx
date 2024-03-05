@@ -1,0 +1,59 @@
+---
+title: "Dockerfile"
+---
+
+export const meta = [{ title: `🐋 ${frontmatter.title}` }];
+
+import Markdown from "react-markdown";
+import { Terminal } from "../components/Terminal";
+import { ExplainShell } from "../components/ExplainShell";
+
+Now, we'll create a file called `Dockerfile` in the same projcet directory.
+
+Dockerfiles are used to instruct Docker in how to build an image.
+
+We'll be using the following directives in this Dockerfile:
+
+- `FROM` - This directive specifies the base image to use for the build. In this case, we're using the official Golang image from Docker Hub.
+
+- `WORKDIR` - This directive sets the working directory for the build. We're setting it to `/app`. This is a fairly arbitrary choice, but it's a common convention to use `/app` as the working directory for Docker applications.
+
+- `COPY` - This directive copies files from the host machine into the image. We're copying the `go.mod` file and the `server.go` file into the `/app` directory.
+
+- `RUN` - This directive runs a command in the image. We're using it to build the Go application. Any changes to the filesystem made by the `RUN` command will be committed to the image. So our build artifact, the `server` binary, will be included in the image.
+
+- `CMD` - This directive specifies the command to run when the container is started from the image. In this case, we're running the `server` binary.
+
+All together, that will look like this:
+
+It's worth typing the contents of this file out by hand to begin your familiarizition with the syntax.
+
+```dockerfile Dockerfile
+FROM golang:1.22
+
+WORKDIR /app
+
+COPY ./go.mod ./
+COPY ./server.go ./
+
+RUN go build -o server server.go
+
+CMD ["./server"]
+```
+
+## Building the image
+
+With that Dockerfile in place, we can build the image.
+
+> It's important to be in the correct working directory when running the `docker build` command. The simplest way is to use `cd` to get into the directory that has the Dockerfile in it.
+
+<Terminal>docker build . --tag hello-world-go</Terminal>
+
+<ExplainShell
+  parts={{
+    "docker build": "Instruct docker to build an image from a Dockerfile",
+    ".": "The path to the directory containing the Dockerfile and any other resources for the build. The `.` is shorthand for the current directory.",
+    "--tag hello-world-go":
+      "The `--tag` flag is used to give the image a name. In this case, we're calling it `hello-world-go`.",
+  }}
+/>

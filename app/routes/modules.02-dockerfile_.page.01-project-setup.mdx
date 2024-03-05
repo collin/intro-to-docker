@@ -1,0 +1,72 @@
+---
+title: "Project setup"
+---
+
+export const meta = [{ title: `🐋 ${frontmatter.title}` }];
+
+import Markdown from "react-markdown";
+import { Terminal } from "../components/Terminal";
+import { ExplainShell } from "../components/ExplainShell";
+
+The first thing we'll need to do is create a directory for our project.
+
+First, make sure you're in your home directory by running `cd ~`.
+
+Then:
+
+- use `mkdir` to create a new directory called `hello-world-go`.
+- use `cd` to move into the new directory.
+
+<Terminal>{`
+mkdir hello-world-go
+cd hello-world-go
+`}</Terminal>
+
+Now that we're in the `hello-world go` directory, we can use the `code` command to open it in Visual Studio Code.
+
+<Terminal>{`
+code .
+`}</Terminal>
+
+<ExplainShell
+  parts={{
+    code: "A special program installed by Visual Studio code to open directories in the editor.",
+    ".": "The current directory, which will be opened in Visual Studio Code.",
+  }}
+/>
+
+Once Visual Studio Code is open, We can create some new files. One way to creat a new file is to right click on the file browser and select "New File".
+
+<figure>
+  <img src="/new-file.png" style={{ maxWidth: 500, poddingTop: "2rem" }} />
+</figure>
+
+The first file to create is a minimal Go server. We'll call it `server.go`.
+
+You can copy this code into the new file:
+
+```go server.go
+package main
+
+import (
+    "fmt"
+    "net/http"
+)
+
+func helloHandler(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintf(w, "Hello, world!")
+}
+
+func main() {
+    http.HandleFunc("/", helloHandler)
+    http.ListenAndServe(":80", nil)
+}
+```
+
+You'll also need a file called `go.mod` to tell Go that this is a module. Create a new file called `go.mod` and copy this code into it:
+
+```go go.mod
+module simple-server
+
+go 1.22.0
+```

@@ -1,0 +1,23 @@
+---
+title: "Running our Go application in a Docker container"
+---
+
+export const meta = [{ title: `🐋 ${frontmatter.title}` }];
+
+import Markdown from "react-markdown";
+import { Terminal } from "../components/Terminal";
+import { ExplainShell } from "../components/ExplainShell";
+
+After the last page, we should have a docker image with the tag `hello-world-go`.
+
+That means we can run it with docker.
+
+<Terminal>docker run --rm -it hello-world-go</Terminal>
+
+If you run that, you should see the output of our Go server: `Server starting on port 80`
+
+Check out what's going on at [http://localhost:80](http://localhost:80) in your browser.
+
+> 🚨 You should see there's nothing there.
+
+That's because we haven't set up networking for docker yet. We'll do that in the next module after we have a group discussion and demonstration about how to expose ports.

@@ -12,8 +12,10 @@ body {
 
 #table-of-contents {
   padding-top: 1rem;
+  width: 200px;
   ol,
   ul {
+    width: 200px;
     margin-top: 0;
     margin-bottom: 0;
     padding-left: 1.5rem;
@@ -21,6 +23,14 @@ body {
   li {
     margin: 0;
     padding: 0;
+  }
+
+  a {
+    padding: 4px;
+  }
+  a.active {
+    color: white;
+    background: black;
   }
 }
 

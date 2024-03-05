@@ -45,6 +45,12 @@ app.use(express.static("build/client", { maxAge: "1h" }));
 
 app.use(morgan("tiny"));
 
+app.all("*", (req, res, next) => {
+  res.header("Cross-Origin-Embedder-Policy", "require-corp");
+  res.header("Cross-Origin-Opener-Policy", "same-origin");
+  next();
+});
+
 // handle SSR requests
 app.all("*", remixHandler);
 

@@ -1,4 +1,4 @@
-import { Link, Outlet, useLocation } from "@remix-run/react";
+import { NavLink as Link, Outlet, useLocation } from "@remix-run/react";
 
 const modules = Object.fromEntries(
   Object.entries(
@@ -143,18 +143,23 @@ export default function Modules() {
           }}
         >
           <hr style={{ width: "100%" }} />
-          <div>
-            {previousPage && (
-              <Link to={pathToRoute(previousPage)}>Previous page</Link>
+          {currentPage !== undefined &&
+            !location.pathname.includes("page/01") && (
+              <div>
+                {previousPage && (
+                  <Link to={pathToRoute(previousPage)}>Previous page</Link>
+                )}
+              </div>
             )}
-          </div>
-          <div
-            style={{
-              overflowX: "auto",
-            }}
-          >
-            {nextPage && <Link to={pathToRoute(nextPage)}>Next page</Link>}
-          </div>
+          {currentPage !== undefined && (
+            <div
+              style={{
+                overflowX: "auto",
+              }}
+            >
+              {nextPage && <Link to={pathToRoute(nextPage)}>Next page</Link>}
+            </div>
+          )}
         </nav>
       </div>
     </div>
