@@ -5,6 +5,7 @@ import mdx from "@mdx-js/rollup";
 import remarkFrontmatter from "remark-frontmatter";
 import { remarkCodeHike } from "@code-hike/mdx";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
+import { vercelPreset } from "@vercel/remix/vite";
 
 export default defineConfig({
   plugins: [
@@ -23,7 +24,7 @@ export default defineConfig({
         ],
       ],
     }),
-    remix(),
+    remix({ presets: [vercelPreset()] }),
     tsconfigPaths(),
   ],
   server: {
