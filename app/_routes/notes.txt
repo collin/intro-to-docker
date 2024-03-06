@@ -1,0 +1,29 @@
+- mounting volumes
+  - mount a named volume for persistent data
+  - mount a local volume to avoid installing local versions of deps
+
+- network
+  - connect two containers together: https://docs.docker.com/network/network-tutorial-standalone/
+  - bind to the host network directly: https://docs.docker.com/network/network-tutorial-host/
+
+- environment variables
+  - set environment variables with docker run
+
+- docker compose
+  - health checks
+  - ports
+  - image
+  - build
+  - multiple services
+    - dependencies
+  - environment file
+
+  - volumes
+    - persistent database
+    - live alternative to copy
+  
+  - gow (watch for go)
+  - cpu/memory control
+
+- k8s demonstration
+  - expose service with nginx load balancer

@@ -1,0 +1,69 @@
+---
+title: "Configuring a runner"
+---
+
+export const meta = [{ title: `🐋 ${frontmatter.title}` }];
+
+import Markdown from "react-markdown";
+import { Terminal } from "../components/Terminal";
+import { ExplainShell } from "../components/ExplainShell";
+
+In this section, we'll want to start with a fresh folder to work in.
+
+So first, switch back into your home directory with `cd ~`.
+
+Then, create a new folder with `mkdir compose-intro` and switch into it with `cd compose-intro`.
+
+You can open this folder in VS Code with `code .`
+
+We'll create a docker compose file to hold configuration for a using the go tooling.
+
+Now, let's create a new file called `docker-compose.yml` with the following content:
+
+```yaml docker-compose.yml
+version: "3.6"
+services:
+  # This is the name of the service in our docker-compose file
+  # We can use this name to refer to this service in other parts of the file
+  # AS well as from the docker compose CLI
+  tools:
+    # This is the image we want to use for this service
+    image: golang:1.22
+    # This is the working_directory we want to use for this service
+    working_dir: /app
+    # And these are the volumes we want to mount into the container
+    # ${PWD} is a special variable that refers to the current working directory
+    # So we're mounting the current working directory into the /app directory in the container
+    volumes:
+      - ${PWD}:/app
+```
+
+This configiruation file is a simple example of a docker-compose file. It defines a single service called `go` that uses the `golang:1.22` image, sets the working directory to `/app` and mounts the current working directory into the `/app` directory in the container.
+
+We can use this with the `docker compose` CLI to run commands in the container.
+
+For example, we can run:
+
+<Terminal>docker compose run tools go version</Terminal>{" "}
+
+to run the `go version` command in the container. We should see something like the following: `go version go1.22.1 linux/arm64`
+
+<ExplainShell
+  parts={{
+    "docker compose run": (
+      <Markdown>
+        Use the `docker compose run` command to run a command in a service
+      </Markdown>
+    ),
+    tools: (
+      <Markdown>
+        We've named our service, tools. This tells docker to use that
+        configuration. So our volume will be mounted, and the worknig directory
+        will be set
+      </Markdown>
+    ),
+    "go version": (
+      <Markdown>This is the command to run in the container</Markdown>
+    ),
+  }}
+/>

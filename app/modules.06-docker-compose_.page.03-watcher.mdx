@@ -1,0 +1,115 @@
+---
+title: "Compose build"
+---
+
+export const meta = [{ title: `🐋 ${frontmatter.title}` }];
+
+import Markdown from "react-markdown";
+import { Terminal } from "../components/Terminal";
+import { ExplainShell } from "../components/ExplainShell";
+
+On this page, we'll set up a simple web server to run as a docker compose service.
+
+We'll start a blank folder for this example.
+
+So first, switch back into your home directory with `cd ~`.
+
+Then, create a new folder with `mkdir composed-web` and switch into it with `cd composed-web`.
+
+You can open this folder in VS Code with `code .`
+
+## Dockerfile
+
+Now, let's create a new file called `Dockerfile.deps` with the following content:
+
+````dockerfile Dockerfile.deps
+FROM golang:1.22
+
+# This installs a tool called `gow` that we'll use to build our go module
+# whenever the source code changes
+RUN go install github.com/mitranim/gow@latest
+```
+
+
+## Compose file
+
+Now, let's create a new file called `docker-compose.yml` with the following content:
+
+```yaml docker-compose.yml
+version: "3.6"
+services:
+  # This is the name of the service in our docker-compose file
+  # We can use this name to refer to this service in other parts of the file
+  # AS well as from the docker compose CLI
+  tools:
+    build:
+      # This is the Dockerfile we want to use for this service
+      context: .
+      dockerfile: Dockerfile.deps
+    # This is the working_directory we want to use for this service
+    working_dir: /app
+    # And these are the volumes we want to mount into the container
+    # ${PWD} is a special variable that refers to the current working directory
+    # So we're mounting the current working directory into the /app directory in the container
+    volumes:
+      - ${PWD}:/app
+  build:
+    # This is the Dockerfile we want to use for this service
+    build:
+      context: .
+      dockerfile: Dockerfile.deps
+    # This is the working_directory we want to use for this service
+    working_dir: /app
+    # And these are the volumes we want to mount into the container
+    # ${PWD} is a special variable that refers to the current working directory
+    # So we're mounting the current working directory into the /app directory in the container
+    volumes:
+      - ${PWD}:/app
+    # This is the command we want to run when we start this service
+    command: gow build server.go -o server
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.deps
+    working_dir: /app
+    volumes:
+      - ${PWD}:/app
+    command: ./server
+    ports:
+      - "8080:80"
+```
+
+This file sets up a three services called `tools`, `build`, and, `web`. Together, we'll use them to create a full development environment.container.
+
+## Go module
+
+And then, let's use the `tools` to initialize our go module.
+
+<Terminal>docker compose run tools go mod init composed-web</Terminal>
+
+This will create a new `go.mod` file in our current directory.
+
+Now, we'll need to add the `server.go` file.
+
+```go server.go
+package main
+
+import (
+    "fmt"
+    "net/http"
+)
+
+func helloHandler(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintf(w, "Hello, world!")
+}
+
+func main() {
+    http.HandleFunc("/", helloHandler)
+    fmt.Println("Server started on port 80")
+    http.ListenAndServe(":80", nil)
+}
+```
+
+## Docker up
+Now, let's start our services with `docker compose up`.
+````

@@ -1,0 +1,73 @@
+---
+title: "Compose build"
+---
+
+export const meta = [{ title: `🐋 ${frontmatter.title}` }];
+
+import Markdown from "react-markdown";
+import { Terminal } from "../components/Terminal";
+import { ExplainShell } from "../components/ExplainShell";
+
+In the last page, we used the `image:` key to specify the image we wanted to use for our service. This is a simple way to use an image, but it's not the only way.
+
+Sometimes, we may need to build a custom image for our service. We can do this by using the `build:` key instead of the `image:` key.
+
+Let's see how this works.
+
+We'll start a blank folder for this example.
+
+So first, switch back into your home directory with `cd ~`.
+
+Then, create a new folder with `mkdir compose-builder` and switch into it with `cd compose-builder`.
+
+You can open this folder in VS Code with `code .`
+
+We'll start by creating a Dockerfile for our custom image.
+
+In this scenario, we'll work as though we're building a video processing application that depends on `ffmpeg`. That doesn't come pre-installed in the `golang` image, so we'll need to create a custom image that includes it.
+
+Create a new file called `Dockerfile.deps` with the following content:
+
+```dockerfile Dockerfile.deps
+FROM golang:1.22
+
+RUN apt-get update && apt-get install -y ffmpeg
+```
+
+Notice that we're not adding any files, or doing anything else in this Dockerfile. We're just using the `golang:1.22` image as a base, and then installing `ffmpeg` with `apt-get`. That's why were calling it `Dockerfile.deps` - it's just for the dependencies.
+
+If we had any other dependencies, including other go packages, we could add additional `COPY` and run `RUN` commands to reference and install them.
+
+Now, let's create a new file called `docker-compose.yml` with the following content:
+
+```yaml docker-compose.yml
+version: "3.6"
+services:
+  # This is the name of the service in our docker-compose file
+  # We can use this name to refer to this service in other parts of the file
+  # AS well as from the docker compose CLI
+  tools:
+    # This is the image we want to use for this service
+    build:
+      # This is the path to the directory containing the Dockerfile we want to use
+      context: .
+      # This is the name of the Dockerfile we want to use
+      dockerfile: Dockerfile.deps
+    # This is the working_directory we want to use for this service
+    working_dir: /app
+    # And these are the volumes we want to mount into the container
+    # ${PWD} is a special variable that refers to the current working directory
+    # So we're mounting the current working directory into the /app directory in the container
+    volumes:
+      - ${PWD}:/app
+```
+
+The key difference in this file is that we're using the `build:` key instead of the `image:` key. This tells docker compose to build a custom image using the Dockerfile we've specified.
+
+Now go ahead and run the following command:
+
+<Terminal>docker compose run tools go version</Terminal>
+
+Before the command runs, docker will build the container as specified in the `Dockerfile.deps` file. This will include the `ffmpeg` package we installed.
+
+So you can also run `docker compose run tools ffmpeg -version` to see that `ffmpeg` is installed.
