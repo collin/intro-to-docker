@@ -1,0 +1,78 @@
+---
+title: "Mounted volumes"
+---
+
+export const meta = [{ title: `🐋 ${frontmatter.title}` }];
+
+import Markdown from "react-markdown";
+import { Terminal } from "../components/Terminal";
+import { ExplainShell } from "../components/ExplainShell";
+
+We can mount volumes from the host machine into a container. This is useful for persisting data between container runs, or for using a docker container to operate on files on the host machine.
+
+In this case, we don't need to create a named volume, becasue we're using a directory on the host machine.
+
+Let's start by switching to our home directory with `cd ~`.
+
+Then create a directory to use as a mount with `mkdir my_mount`.
+
+And add a file to the directory with the following snippet:
+
+<Terminal>echo "Hello, world" > my_mount/hello.txt</Terminal>
+
+<ExplainShell
+  parts={{
+    [`echo "Hello, world"`]: (
+      <Markdown>
+        This emits the text `Hello, world` to the standard output.
+      </Markdown>
+    ),
+    [`>`]: (
+      <Markdown>
+        This is a redirection operator. It takes the standard output of the
+        command on the left and writes it to the file on the right.
+      </Markdown>
+    ),
+    [`my_mount/hello.txt`]: (
+      <Markdown>This is the path to the file we want to write to.</Markdown>
+    ),
+  }}
+/>
+
+Now we can run a container with this directory mounted.
+
+<Terminal>docker run --rm -it -v ~/my_mount:/data ubuntu bash</Terminal>
+
+<ExplainShell
+  parts={{
+    "docker run --rm -it": null,
+    "-v": (
+      <Markdown>
+        The `-v` or `--volume` flag is used to attach a volume to a container.
+      </Markdown>
+    ),
+    "~/my_mount:/data": (
+      <Markdown>
+        There are two parts to the value for the volume flag here. The first
+        part is the path on the host machine we want to attach. The second part
+        is the path inside the container where we want to attach the volume.
+        They are seperated by `:`. In this case, we're attaching the
+        `~/my_mount` directory to the `/data` directory inside the container.
+      </Markdown>
+    ),
+    ubuntu: null,
+    bash: null,
+  }}
+/>
+
+Inside that subshell, we can see the file we created on the host machine. Let's check it out with `cat /data/hello.txt`. You should see `Hello, world` printed to the terminal.
+
+We can also create a file inside the container and see it on the host machine. Let's create a file with:
+
+<Terminal>echo "Goodbye, world" > /data/goodbye.txt</Terminal>
+
+Then we can exit the container with `exit`.
+
+Now, back on the host machine, we can see both files are in the `my_mount` directory.
+
+<Terminal>ls ~/my_mount</Terminal>

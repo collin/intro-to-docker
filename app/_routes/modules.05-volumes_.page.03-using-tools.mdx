@@ -1,0 +1,75 @@
+---
+title: "Using tools"
+---
+
+export const meta = [{ title: `🐋 ${frontmatter.title}` }];
+
+import Markdown from "react-markdown";
+import { Terminal } from "../components/Terminal";
+import { ExplainShell } from "../components/ExplainShell";
+
+Since we can mount volumes from the host machine into a container, we can use docker to run tools that are installed in a container, but not on the host machine.
+
+In this example, we'll use the `golang` image to run some setup commands for a Go project. But we'll never install the `go` tool on the host machine.
+
+First, we'll create a project directory on the host machine.
+
+Let's start by switching to our home directory with `cd ~`.
+
+Then create a directory to use as a mount with `mkdir my-go-project`.
+
+Now, let's run a container with the `golang` image and mount the `my-go-project` directory into the container.
+
+<Terminal>
+  {`docker run --rm -it -v ~/my-go-project:/my-go-project --workdir /my-go-project golang:1.22 go mod init`}
+</Terminal>
+
+Woah! there's a a lot going on in that command. Let's break it down.
+
+<ExplainShell
+  parts={{
+    "docker run --rm -it": null,
+    "-v ~/my-go-project:/my-go-project": (
+      <Markdown>
+        This mounts the `~/my-go-project` directory on the host machine into the
+        `/my-go-project` directory in the container.
+      </Markdown>
+    ),
+    "--workdir /my-go-project": (
+      <Markdown>
+        This sets the working directory in the container to `/my-go-project`.
+        That way, any commands we run will be executed with `/my-go-project` as
+        the current directory.
+      </Markdown>
+    ),
+    "golang:1.22": (
+      <Markdown>
+        This is the name of the image we want to run. It's the official Go image
+        from Docker Hub.
+      </Markdown>
+    ),
+    "go mod init": (
+      <Markdown>
+        This is the command we want to run in the container. This uses the go
+        tooling to initialize a module. This will execute in the working
+        directory, which happens to be the mounted directory. So any changes
+        this makes to the file system will appear in the `~/my-go-project`
+        directory on the host machine.
+      </Markdown>
+    ),
+    "my-go-project": (
+      <Markdown>
+        This is an argument to the `go mod init` command. It tells the `go` tool
+        to initialize a module named `my-go-project`
+      </Markdown>
+    ),
+  }}
+/>
+
+Now, take a look at the `~/my-go-project` directory on the host machine. You should see a `go.mod` file. This file was created by the `go mod init` command we ran in the container.
+
+This way, we've been able to use the go tooling without installing it on the host machine.
+
+This is a powerful way to use tools that are installed in a container, but not on the host machine. It's a great way to keep your host machine clean and free of clutter. It also means you can use different versions of tools for different projects without having to worry about conflicts.
+
+But that command was a bit long and hard to remember. In a later section we'll see how to use a `docker-compose.yml` file to make this easier to run.

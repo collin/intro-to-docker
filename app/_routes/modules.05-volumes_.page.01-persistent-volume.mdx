@@ -1,0 +1,102 @@
+---
+title: "Persistent volumes"
+---
+
+export const meta = [{ title: `🐋 ${frontmatter.title}` }];
+
+import Markdown from "react-markdown";
+import { Terminal } from "../components/Terminal";
+import { ExplainShell } from "../components/ExplainShell";
+
+We can create persistent storage volumes with docker. This is useful for storing data that we want to persist between container runs.
+
+<Terminal>docker volume create my_volume</Terminal>
+
+<ExplainShell
+  parts={{
+    docker: null,
+    volume: (
+      <Markdown>
+        The `volume` subcommand is used to manage volumes in docker. Much like
+        containers and images, we have many resource management options, like
+        `ls` and `rm`.
+      </Markdown>
+    ),
+    create: (
+      <Markdown>
+        In this example, we're creating a named persistent volume. This volume
+        can be used by any container we run later.
+      </Markdown>
+    ),
+    my_volume: (
+      <Markdown>
+        This is the name of the volume we're creating. We can use this name to
+        reference the volume in other commands.
+      </Markdown>
+    ),
+  }}
+/>
+
+We can see the volume we created with `docker volume ls`. Try it out.
+
+Now, we can run a container with this volume attached.
+
+<Terminal>docker run --rm -it -v my_volume:/data ubuntu bash</Terminal>
+
+<ExplainShell
+  parts={{
+    "docker run --rm -it": null,
+    "-v": (
+      <Markdown>
+        The `-v` or `--volume` flag is used to attach a volume to a container.
+      </Markdown>
+    ),
+    "my_volume:/data": (
+      <Markdown>
+        There are two parts to the value for the volume flag here. The first
+        part is the name of the volume we want to attach. The second part is the
+        path inside the container where we want to attach the volume. They are
+        seperated by `:`. In this case, we're attaching the `my_volume` volume
+        to the `/data` directory inside the container.
+      </Markdown>
+    ),
+    ubuntu: (
+      <Markdown>
+        This is the name of the image we're running. We're running a container
+        from the `ubuntu` image.
+      </Markdown>
+    ),
+    bash: (
+      <Markdown>
+        This is the command we're running inside the container. We're starting a
+        bash shell. So this will take over our terminal and we'll be "inside"
+        the container.
+      </Markdown>
+    ),
+  }}
+/>
+
+Once you're inside, you can create files in the `/data` directory. These files will be stored in the volume we created earlier. When you exit the container, the files will still be there.
+
+Try using `cd /data` to move into the directory and `touch file.txt` to create a file. Then exit the container with `exit`.
+
+Now, we can use the `docker run` command with the `ls` command to see the files we created in that volume.
+
+<Terminal>docker run --rm -v my_volume:/data ubuntu ls /data</Terminal>
+
+<ExplainShell
+  parts={{
+    "docker run --rm": null,
+    "-v": null,
+    "my_volume:/data": null,
+    ubuntu: null,
+    "ls /data": (
+      <Markdown>
+        This is the command we're running inside the container. We're listing
+        the files in the `/data` directory.
+      </Markdown>
+    ),
+  }}
+/>
+
+> Caveat: The volume created this way is managd by `docker` and is stored in the `/var/lib/docker/volumes` directory. In production it's more likely that the storage volumes will be managed by another system, like a cloud provider's storage service, or a container orchestration system such as kubernetes.
