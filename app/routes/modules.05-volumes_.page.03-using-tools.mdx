@@ -21,7 +21,7 @@ Then create a directory to use as a mount with `mkdir my-go-project`.
 Now, let's run a container with the `golang` image and mount the `my-go-project` directory into the container.
 
 <Terminal>
-  {`docker run --rm -it -v ~/my-go-project:/my-go-project --workdir /my-go-project golang:1.22 go mod init`}
+  {`docker run --rm -it -v ~/my-go-project:/my-go-project --workdir /my-go-project golang:1.22 go mod init my-go-project`}
 </Terminal>
 
 Woah! there's a a lot going on in that command. Let's break it down.
