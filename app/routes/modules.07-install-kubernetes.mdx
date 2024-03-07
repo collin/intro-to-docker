@@ -1,0 +1,23 @@
+---
+title: "docker compose"
+---
+
+export const meta = [{ title: `🐋 ${frontmatter.title}` }];
+
+import Markdown from "react-markdown";
+import { Terminal } from "../components/Terminal";
+import { ExplainShell } from "../components/ExplainShell";
+
+We're going to install `kind`. A minimilistic kubernetes cluster that runs inside a docker container.
+
+<Terminal>sudo snap install go --classic</Terminal>
+
+When prompted, use the password `password`.
+
+<Terminal>go install sigs.k8s.io/kind@v0.22.0</Terminal>
+
+<Terminal>/home/training/go/bin/kind create cluster</Terminal>
+
+To confirm the cluster is running, run the following command:
+
+<Terminal>kubectl --cluster-info</Terminal>
